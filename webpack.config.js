@@ -15,12 +15,23 @@ module.exports = {
         test: /\.css$/,
         use: ["style-loader", "css-loader"],
       },
+      {
+        test: /\.(glsl|vs|fs|vert|frag)$/,
+        exclude: /node_modules/,
+        use: ["raw-loader", "glslify-loader"],
+      },
     ],
   },
   resolve: { extensions: ["*", ".js", ".jsx"] },
+  experiments: {
+    outputModule: true,
+  },
   output: {
-    path: path.resolve(__dirname, "dist/"),
-    publicPath: "/dist/",
     filename: "orbits.js",
+    path: path.resolve(__dirname, "dist"),
+
+    library: {
+      type: "module",
+    },
   },
 };

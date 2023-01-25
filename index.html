@@ -9,6 +9,15 @@
   </head>
   <body>
     <div id="root"></div>
-    <script src="./dist/orbits.js"></script>
+    <script type="module">
+      import { Start, Stop } from "./dist/orbits.js";
+      window.onload = function () {
+        Start();
+      };
+
+      window.onunload = function () {
+        Stop();
+      };
+    </script>
   </body>
 </html>

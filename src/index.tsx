@@ -4,6 +4,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import React from "react";
 import { Physics, useSphere } from "@react-three/cannon";
 import { Sky, OrbitControls } from "@react-three/drei";
+import { unmountComponentAtNode } from "react-dom";
 
 const rfs = THREE.MathUtils.randFloatSpread;
 const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
@@ -14,29 +15,6 @@ const baubleMaterial = new THREE.MeshStandardMaterial({
   emissive: "#370037",
 });
 
-createRoot(document.getElementById("root") as HTMLElement).render(
-  <Canvas camera={{ position: [0, 0, 70] }}>
-    <ambientLight intensity={0.25} />
-    <spotLight
-      intensity={1}
-      angle={0.2}
-      penumbra={1}
-      position={[100, 100, 100]}
-      castShadow
-      shadow-mapSize={[512, 512]}
-    />
-    <directionalLight
-      intensity={5}
-      position={[-100, -100, -100]}
-      color="purple"
-    />
-    <Physics gravity={[0, 0, 0]} iterations={1}>
-      <Clump />
-    </Physics>
-    <OrbitControls maxDistance={100} />
-    <Sky />
-  </Canvas>
-);
 const objectCount: number = 100;
 function Clump({ ...props }) {
   const [ref, api] = useSphere<THREE.InstancedMesh>(() => ({
@@ -84,4 +62,34 @@ function Clump({ ...props }) {
       material={baubleMaterial}
     />
   );
+}
+
+export function Start() {
+  createRoot(document.getElementById("root") as HTMLElement).render(
+    <Canvas camera={{ position: [0, 0, 70] }}>
+      <ambientLight intensity={0.25} />
+      <spotLight
+        intensity={1}
+        angle={0.2}
+        penumbra={1}
+        position={[100, 100, 100]}
+        castShadow
+        shadow-mapSize={[512, 512]}
+      />
+      <directionalLight
+        intensity={5}
+        position={[-100, -100, -100]}
+        color="purple"
+      />
+      <Physics gravity={[0, 0, 0]} iterations={1}>
+        <Clump />
+      </Physics>
+      <OrbitControls maxDistance={100} />
+      <Sky />
+    </Canvas>
+  );
+}
+
+export function Stop() {
+  unmountComponentAtNode(document.getElementById("root") as HTMLElement);
 }
